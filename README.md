@@ -40,6 +40,22 @@ Not every playlist uses the same channel IDs. If you find your guide is empty, y
 3.  Add or replace the links with EPG sources that match your provider (ensure they are `.xml` or `.xml.gz` links).
 4.  **Pro Tip:** If your M3U uses `tvg-id="CNN.us"`, ensure at least one of your sources contains that same ID.
 
+5.  ## ⚙️ Customizing your EPG Sources
+Not every playlist uses the same channel IDs. If you find your guide is empty, you may need to add or change the EPG sources.
+
+1.  Open `update_epg.py`.
+2.  Locate the `URLS = [...]` section at the top:
+
+```python
+URLS = [
+    '[https://epgshare01.online/epgshare01/epg_ripper_US2.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_US2.xml.gz)',
+    '[https://epgshare01.online/epgshare01/epg_ripper_US_LOCALS1.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_US_LOCALS1.xml.gz)',
+    '[https://epgshare01.online/epgshare01/epg_ripper_CA2.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_CA2.xml.gz)',
+    '[https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz)',
+    '[https://epgshare01.online/epgshare01/epg_ripper_DUMMY_CHANNELS.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_DUMMY_CHANNELS.xml.gz)',
+    '[https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml](https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml)'
+]
+
 ---
 
 ## 🔗 How to use it in your IPTV Player
