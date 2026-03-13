@@ -38,7 +38,6 @@ Not every playlist uses the same channel IDs. If you find your guide is empty, y
 1.  Open `update_epg.py`.
 2.  Locate the `URLS = [...]` section at the top.
 3.  Add or replace the links with EPG sources that match your provider (ensure they are `.xml` or `.xml.gz` links).
-4.  **Pro Tip:** If your M3U uses `tvg-id="CNN.us"`, ensure at least one of your sources contains that same ID.
 
 5.  ## ⚙️ Customizing your EPG Sources
 Not every playlist uses the same channel IDs. If you find your guide is empty, you may need to add or change the EPG sources.
