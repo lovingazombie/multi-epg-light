@@ -3,33 +3,44 @@ name: Update Light EPG
 on:
   schedule:
     - cron: '0 */6 * * *'  # Runs every 6 hours
-  workflow_dispatch:
+  workflow_dispatch:      # Allows you to run it manually
 
 permissions:
   contents: write
 
 jobs:
-  update:
+  update-epg:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Necessary for the force-push/amend logic
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install Requests
+      - name: Install Dependencies
         run: pip install requests
 
-      - name: Run Script
+      - name: Run EPG Scraper
+        env:
+          M3U_URL: ${{ secrets.M3U_URL }}
         run: python update_epg.py
 
-      - name: Commit and Push (Force)
+      - name: Commit and Force Push
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          
+          # Add the generated files
           git add epgs/*
-          git commit --amend -m "Update EPG Data $(date)" || git commit -m "Update EPG Data $(date)"
+          
+          # Amend the previous commit to keep the repo history clean (one commit only)
+          # If it's the first time running, it will just create a normal commit.
+          git commit --amend -m "Update EPG: $(date -u)" || git commit -m "Update EPG: $(date -u)"
+          
+          # Force push to overwrite the history and keep the repo size tiny
           git push --force
