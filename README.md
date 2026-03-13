@@ -1,6 +1,6 @@
 # 📺 EPG Light: Smart EPG Harvester
 
-**EPG Light** is a streamlined, automated tool that creates a custom TV guide (EPG) specifically for your unique playlist. Instead of downloading thousands of channels you don't own, this script "looks" at your playlist `id=""` tags and only grabs the data you actually need.
+**EPG Light** is a streamlined, automated tool that creates a custom TV guide (EPG) specifically for your unique playlist. Instead of downloading thousands of channels you don't have, this script "looks" at your playlist `id=""` tags and only grabs the data you actually need.
 
 ## 🌟 Why use this?
 * **Tiny File Size:** Generates a compressed `.gz` file to stay under GitHub's 100MB limit.
