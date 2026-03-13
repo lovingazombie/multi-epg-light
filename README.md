@@ -33,23 +33,16 @@ If you **Fork** this repo, you will inherit the original settings. Instead, **Cl
 ---
 
 ## ⚙️ Customizing your EPG Sources
-Not every playlist uses the same channel IDs. If you find your guide is empty, you may need to add or change the EPG sources.
+Not every playlist uses the same channel IDs. If your guide is empty, you can edit the sources inside `update_epg.py`. 
 
-1.  Open `update_epg.py`.
-2.  Locate the `URLS = [...]` section at the top.
-3.  Add or replace the links with EPG sources that match your provider (ensure they are `.xml` or `.xml.gz` links).
-4.  **Pro Tip:** If your M3U uses `tvg-id="CNN.us"`, ensure at least one of your sources contains that same ID.
+Find this block at the top of the script:
 
----
-
-## 🔗 How to use it in your IPTV Player
-Add a new EPG source in your player using the "Raw" link to your compressed file:
-`https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/epgs/light-epg.xml.gz`
-
----
-
-## 📜 Credits & Support
-Created by **BuddyChewChew**.
-
-Join the community for updates and support:
-[Discord Server](https://discord.gg/fnsWGDy2mm)
+```python
+URLS = [
+    '[https://epgshare01.online/epgshare01/epg_ripper_US2.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_US2.xml.gz)',
+    '[https://epgshare01.online/epgshare01/epg_ripper_US_LOCALS1.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_US_LOCALS1.xml.gz)',
+    '[https://epgshare01.online/epgshare01/epg_ripper_CA2.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_CA2.xml.gz)',
+    '[https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz)',
+    '[https://epgshare01.online/epgshare01/epg_ripper_DUMMY_CHANNELS.xml.gz](https://epgshare01.online/epgshare01/epg_ripper_DUMMY_CHANNELS.xml.gz)',
+    '[https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml](https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml)'
+]
