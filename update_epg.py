@@ -1,11 +1,14 @@
 import os
 import gzip
+import re
 import xml.etree.ElementTree as ET
 import requests
 
 # Settings
 NAME = "light"
 SAVE_AS_GZ = True
+# Get URL from GitHub Secret (falls back to None if not set)
+M3U_URL = os.getenv("M3U_URL")
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -24,12 +27,37 @@ URLS = [
     'https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml'
 ]
 
+def get_tvg_ids_from_remote_m3u():
+    """Downloads M3U from GitFlic and extracts tvg-id values."""
+    tvg_ids = set()
+    if not M3U_URL:
+        print("No M3U_URL provided. Processing full EPG instead.")
+        return None
+
+    print(f"Downloading M3U from GitFlic...")
+    try:
+        response = requests.get(M3U_URL, timeout=30)
+        if response.status_code != 200:
+            print(f"Failed to download M3U: {response.status_code}")
+            return None
+        
+        # Extract tvg-id="value"
+        pattern = re.compile(r'tvg-id="([^"]+)"')
+        matches = pattern.findall(response.text)
+        for val in matches:
+            tvg_ids.add(val)
+            
+        print(f"Successfully mapped {len(tvg_ids)} channels from your .ru playlist.")
+        return tvg_ids
+    except Exception as e:
+        print(f"Error fetching M3U: {e}")
+        return None
+
 def fetch_and_parse(url):
     try:
-        print(f"Fetching: {url.split('/')[-1]}")
+        print(f"Fetching EPG: {url.split('/')[-1]}")
         response = requests.get(url, timeout=60)
-        if response.status_code != 200:
-            return None
+        if response.status_code != 200: return None
         content = response.content
         if url.endswith('.gz'):
             content = gzip.decompress(content)
@@ -39,23 +67,25 @@ def fetch_and_parse(url):
         return None
 
 def main():
-    master_root = ET.Element('tv', {"generator-info-name": "BuddyChewChew-Light-Merger"})
+    valid_ids = get_tvg_ids_from_remote_m3u()
+    master_root = ET.Element('tv', {"generator-info-name": "BuddyChewChew-Dynamic-Filter"})
 
     for url in URLS:
         epg_data = fetch_and_parse(url)
         if epg_data is None: continue
 
         for channel in epg_data.findall('channel'):
-            master_root.append(channel)
+            if valid_ids is None or channel.get('id') in valid_ids:
+                master_root.append(channel)
 
         for prog in epg_data.findall('programme'):
-            title_node = prog.find('title')
-            if title_node is not None and title_node.text:
-                if title_node.text in ['NHL Hockey', 'Live: NFL Football']:
-                    subtitle = prog.find('sub-title')
-                    if subtitle is not None and subtitle.text:
-                        title_node.text = f"{title_node.text} {subtitle.text}"
-            master_root.append(prog)
+            if valid_ids is None or prog.get('channel') in valid_ids:
+                title = prog.find('title')
+                if title is not None and title.text in ['NHL Hockey', 'Live: NFL Football']:
+                    sub = prog.find('sub-title')
+                    if sub is not None and sub.text:
+                        title.text = f"{title.text} {sub.text}"
+                master_root.append(prog)
 
     tree = ET.ElementTree(master_root)
     tree.write(OUTPUT_FILE, encoding='utf-8', xml_declaration=True)
@@ -63,7 +93,7 @@ def main():
     if SAVE_AS_GZ:
         with gzip.open(OUTPUT_FILE_GZ, 'wb') as f:
             tree.write(f, encoding='utf-8', xml_declaration=True)
-    print("Process Complete.")
+    print("M3U-Filtered EPG generation complete.")
 
 if __name__ == "__main__":
     main()
