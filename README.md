@@ -6,7 +6,6 @@
 * **Tiny File Size:** Generates a compressed `.gz` file to stay under GitHub's 100MB limit.
 * **Smart Filtering:** Uses your own M3U playlist as a map so your guide is never cluttered.
 * **Fully Automated:** Updates itself every 6 hours.
-* **Sports Enhancement:** Merges sub-titles for NHL and NFL games for a better look in TiviMate.
 
 ---
 
