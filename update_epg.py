@@ -32,6 +32,7 @@ URLS = [
     'https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz',
     'https://epgshare01.online/epgshare01/epg_ripper_FANDUEL1.xml.gz',
     'https://tvpass.org/epg.xml',
+    'http://seeapenny.xyz/xmltv.php?username=tmo247line&password=65s4d64vgfdfbae4&type=m3u_plus', 
     'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/tubi_epg.xml', 
     'https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/nzau/epg.xml.gz',
     'https://epgshare01.online/epgshare01/epg_ripper_DUMMY_CHANNELS.xml.gz',
